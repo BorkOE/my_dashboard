@@ -1,0 +1,221 @@
+<!-- TODO: 
+    
+ -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='study_style.css') }}">
+    <title>Play</title>
+    <form action="/study_index">
+        <input type="submit" value="Back">
+    </form>
+    <p id="n_corr_answers"></p>
+    <p id="n_wrong_answers"></p>
+    <p id="accuracy"></p>
+
+    <div class="choosen_card_div">
+        <div class="choosen_card" , id="choosen_card">
+            <h2 style="border-top:1px solid rgb(15, 152, 180); padding: 15px; margin-top: 30px" class="question"></h2>
+        </div>
+    </div>
+
+</head>
+
+<body>
+    <div class="flashcards" id="selectable">
+    </div>
+
+    <script>
+        var n_correct_answers = 0
+        var n_wrong_answers = 0
+        const flashcards = document.getElementsByClassName("flashcards")[0];
+        const question_card = document.getElementsByClassName("choosen_card_div")[0];
+        const data = JSON.parse('{{data | tojson}}');
+        var choosen_question = '';
+        var correct_answer = '';
+        var wrong_answers = Array()
+        const pic_filetypes = ['jpg', 'jpeg', 'webp', 'png']
+                
+
+        function new_phase() {
+            var selectable = document.getElementById('selectable')  // Clear old cards
+            selectable.innerHTML = '';
+            
+            update_stats()
+            select_cards()
+            set_choosen_card(choosen_question)
+            var possible_answers = wrong_answers
+            possible_answers.push(correct_answer)
+            shuffleArray(possible_answers)
+            for (var i in possible_answers) {
+                divMaker(possible_answers[i])
+            }
+
+        }
+
+        function select_cards() {
+            rand_i = getRandom()
+            if (rand_i) {
+                var curr_data = swap_keys_values(data);
+            } else {
+                var curr_data = data;
+                
+            }
+            choosen_question = randomKey(curr_data)          // Find a question
+            correct_answer = curr_data[choosen_question]     // define correct answer
+            wrong_answers = get_wrong_answers(curr_data)         // Get incorrect answers
+        }
+
+        function get_wrong_answers(curr_data){
+            var ret = [];
+            var keys = Object.keys(curr_data);
+            shuffleArray(keys)
+            for (var key in keys) {
+                var val = curr_data[keys[key]]
+                if (ret.includes(val)){
+                    continue
+                }
+                if (val == correct_answer){
+                    continue
+                }
+                
+                ret.push(val)
+                if (ret.length == 4) {
+                    break;
+                }
+            }
+            return ret
+        }
+
+        function shuffleArray(array) {
+                for (var i = array.length - 1; i > 0; i--) {
+                    var j = Math.floor(Math.random() * (i + 1));
+                    var temp = array[i];
+                    array[i] = array[j];
+                    array[j] = temp;
+                }
+            }
+
+        function swap_keys_values(json) {
+            // Returns a swapped dict, shuffeling the keys before to achive different picks in game
+            var ret = {};
+            keys = Object.keys(json)
+            shuffleArray(keys)
+
+            for (var key in keys) {
+                ret[json[keys[key]]] = keys[key];
+            }
+            return ret;
+        }
+
+        var randomKey = function (obj) {
+                var keys = Object.keys(obj);
+                return keys[keys.length * Math.random() << 0];
+            };
+
+        function getRandom() {
+            return Math.floor(Math.random() * 2);
+        }
+
+        function set_choosen_card(question) {
+            question_card.innerHTML = ''
+            var div = document.createElement("div");
+            div.className = 'choosen_card';
+            var re = /(?:\.([^.]+))?$/;
+            var filetype = re.exec(question)[1]
+
+            if (pic_filetypes.includes(filetype)) {
+                var content = get_pic(question);
+            } else {
+                var content = get_h2(question);
+            }
+
+            div.appendChild(content);
+            question_card.appendChild(div);
+            // question_card.replaceChildren(div)
+        }
+    
+        function get_h2(text) {
+            var h2_answer = document.createElement("h2");
+            h2_answer.setAttribute("style", "text-align:center; display:block; color:rgb(15, 152, 180); margin:10px");
+            h2_answer.innerHTML = text;
+            h2_answer.id = text;
+            return h2_answer
+        }
+
+        function get_pic(text){
+            var pic_answer = document.createElement('img')
+            pic_answer.setAttribute("src", "static/pics/" + text);
+            pic_answer.setAttribute("style", "width: auto; height: auto; max-width: 350px; max-height: 200px;");
+            pic_answer.id = text
+            return pic_answer
+        }
+        
+        function divMaker(text) {
+            var div = document.createElement("div");
+            div.className = 'flashcard';
+            var re = /(?:\.([^.]+))?$/;
+            var filetype = re.exec(text)[1]
+            var pressed = false
+
+            if (pic_filetypes.includes(filetype)){
+                var content = get_pic(text);
+            } else{
+                var content = get_h2(text);
+            }
+            
+            div.appendChild(content);
+
+            div.addEventListener("click", function () {
+                if (content.id == correct_answer) {
+                    console.log('Rätt svar!')
+                    n_correct_answers += 1
+                    new_phase()
+                } else {
+                    if (pressed){
+                        return
+                    }
+                    console.log('Fel svar...')
+                    n_wrong_answers += 1
+                    div.setAttribute('style', 'background-color:red')
+                    update_stats()
+                    pressed = true
+                }
+
+                });
+
+            flashcards.appendChild(div);
+        }
+
+        function update_stats(text){
+            var corr_elem = document.getElementById('n_corr_answers')
+            var wrong_elem = document.getElementById('n_wrong_answers')
+            var accuracy_elem = document.getElementById('accuracy')
+            var temp_acc = ''
+
+            if (n_wrong_answers == 0){
+                temp_acc = 1
+            } else {
+                temp_acc = n_correct_answers / (n_correct_answers + n_wrong_answers)
+            }
+
+            temp_acc = Math.round((temp_acc*100) * 10) / 10 + '%'
+            
+            corr_elem.innerHTML = 'Correct answer: ' + n_correct_answers
+            wrong_elem.innerHTML = 'Wrong answer: ' + n_wrong_answers
+            accuracy_elem.innerHTML = 'Accuracy: ' + temp_acc
+        }
+
+        new_phase()
+        update_stats()
+
+    </script>
+
+</body>
+
+</html>

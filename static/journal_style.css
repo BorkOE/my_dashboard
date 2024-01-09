@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    margin: 20px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    background-color: rgb(101, 134, 149);
+}
+
+header{
+    background-color: white;
+}
+
+img{
+    width: auto;
+    height: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+button{
+    padding: 8px;
+    outline: none;
+    cursor: pointer;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    background-color: whitesmoke;
+}
+
+buton:hover{
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.container{
+    width: 95%;
+    margin: auto;
+}
+
+.nav{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: auto;
+    padding: 20px 0;
+    background-color: white;
+}
+
+.nav button{
+    font-family: inherit;
+}
+
+.input_area{
+    text-align: center;
+}
+
+.input_div{
+    text-align: center;
+}
+
+.journal_entries{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    width: 100%;
+    margin: auto;
+    margin-top: 20px;
+    padding: 0 20px;
+    white-space: pre-wrap;
+}
+
+.journal {
+    width: 370px;
+    /* height auto gör kortens höjd flexibla */
+    height: auto;
+    flex-wrap: wrap;
+    word-wrap: break-word;
+    margin: 20px;
+    padding: 15px;
+    background-color: white;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    border-color: gray;
+    border-style: solid;
+    border-width: 5px;
+    border-radius: 20px;
+}
+
+#rank1 {
+    border-color: rgb(216, 23, 23);
+}
+
+#rank2 {
+    border-color: rgb(216, 23, 23);
+}
+
+#rank3 {
+    border-color: rgb(216, 107, 23);
+}
+
+#rank4 {
+    border-color: rgb(216, 107, 23);
+}
+
+#rank5 {
+    border-color: rgb(208, 194, 68);
+}
+
+#rank6 {
+    border-color: rgb(208, 194, 68);
+}
+
+#rank7 {
+    border-color: rgb(109, 203, 46);
+}
+
+#rank8 {
+    border-color: rgb(109, 203, 46);
+}
+
+#rank9 {
+    border-color: rgb(65, 168, 14);
+}
+
+#rank10 {
+    border-color: rgb(65, 168, 14);
+}
+
+.journal h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0.2rem;
+}
+
+@media(max-width:768px){
+}
+
+@media(max-width:480px){
+    .nav{
+        flex-direction: column;
+        align-items: center;
+    }
+}

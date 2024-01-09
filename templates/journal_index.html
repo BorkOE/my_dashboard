@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='journal_style.css') }}">
+        <p>Add journal on this page</p>
+    </head>
+
+    <body>
+        <form action="/">
+            <input type="submit" value="Tillbaka till Dashboard">
+        </form>
+
+        <form action="/show_journals">
+            <input type="submit" value="Visa dagbok">
+        </form>
+
+        <div class="input_area">
+            <textarea name="journal_text" form="journal_form" placeholder="Skriv journal här..." cols="80" rows="20"></textarea>
+            <form action="/journal_index" id="journal_form" method="post">
+                <input type="radio" id="r1" name="rank" value="1">
+                <label for="r1">1</label>
+                <input type="radio" id="r2" name="rank" value="2">
+                <label for="r2">2</label>
+                <input type="radio" id="r3" name="rank" value="3">
+                <label for="r3">3</label>
+                <input type="radio" id="r4" name="rank" value="4">
+                <label for="r4">4</label>
+                <input type="radio" id="r5" name="rank" value="5">
+                <label for="r5">5</label>
+                <input type="radio" id="r6" name="rank" value="6">
+                <label for="r6">6</label>
+                <input type="radio" id="r7" name="rank" value="7">
+                <label for="r7">7</label>
+                <input type="radio" id="r8" name="rank" value="8">
+                <label for="r8">8</label>
+                <input type="radio" id="r9" name="rank" value="9">
+                <label for="r9">9</label>
+                <input type="radio" id="r10" name="rank" value="10">
+                <label for="r10">10</label>
+                
+                <br>
+                <input type="submit">
+            </form>
+        </div>
+
+
+        
+    </body>
+    
+</html>

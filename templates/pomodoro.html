@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='study_style.css') }}">
+
+    <title>Pomodoro!</title>
+    <form action="/" method="post">
+        <input type="submit" value="Back">
+    </form>
+    <br>
+
+</head>
+
+<body>
+
+    <div class="clock">
+        <h2>Minutes left: -</h2>
+    </div>
+    
+    <br>
+    <select name="timer_opt" id="timer_opt">
+        <option value="15">15</option>
+        <option value="20">20</option>
+        <option value="25" selected>25</option>
+        <option value="30">30</option>
+        <option value="35">35</option>
+    </select>
+    <br>
+    <button onclick=start_timer()>Start Pomodoro!</button>
+    
+
+
+<script>
+    var remaining_time; // milisec
+    var last_min;    // minutes left
+    var current_min;
+    var ticker;
+    var clock = document.getElementsByClassName('clock')[0].children[0] //h2 element
+
+    function update_time(){
+        current_min = millisec_to_minutes(time_left-1)
+        if (current_min != last_min){
+            clock.innerHTML = "Minutes left: " + current_min
+            last_min = current_min
+        }
+    }
+
+    function start_timer(){
+        // TODO: Ta bort tidiagre timer om en ny startas
+        try {
+            ticker.stop()       // Stops if we have an earlier timer going
+        } catch (error) {
+            
+        }
+        var time_len = parseInt(document.getElementById('timer_opt').value)
+        ticker = new AdjustingInterval(time_len);
+        ticker.start()
+        update_time()
+    }
+
+    function millisec_to_minutes(milisec){
+        // returns the minute "we are on"
+        sec = milisec / 1000
+        min = sec / 60
+        return Math.floor(min) + 1
+    }
+
+    function AdjustingInterval(timer_len) {
+        var that = this;
+        var expected, timeout;
+        this.interval = 1000;
+        var milisec_time_len = timer_len * 60 * 1000;
+        var stop_time = Date.now() + milisec_time_len;
+        time_left = milisec_time_len;
+
+        this.start = function () {
+            expected = Date.now() + this.interval;
+            timeout = setTimeout(step, this.interval);
+        }
+
+        this.stop = function(){
+            clearTimeout(timeout)
+        }
+
+        function step() {
+            time_left = stop_time - Date.now()
+            remaining_time = this.time_left
+            var drift = Date.now() - expected;
+            expected += that.interval;
+            timeout = setTimeout(step, Math.max(0, that.interval - drift));
+            // console.log(millisec_to_minutes(time_left))
+            update_time()
+            
+            if (time_left <= 0){
+                alert('Pomodoro klar!')
+                clearTimeout(timeout)
+                // Add timer len to some collection
+            }
+        }
+    }
+
+    
+</script>
+</body>
+
+</html>

@@ -1,0 +1,104 @@
+<!-- TODO: 
+    Välja månad
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='journal_style.css') }}">
+
+    <form action="/journal_index">
+        <input type="submit" value="Tillbaka">
+    </form>
+
+</head>
+
+<body>
+    <div class="input_div" style="display: none;">
+        <textarea name="journal_text" form="journal_form" id="journal_textarea" cols="80" rows="20"></textarea>
+        <form action="/edit_text" id="journal_form" method="post">
+            <input type="text" name="date" value="" style="display: none;">
+            <input type="radio" id="r1" name="rank" value="1">
+            <label for="r1">1</label>
+            <input type="radio" id="r2" name="rank" value="2">
+            <label for="r2">2</label>
+            <input type="radio" id="r3" name="rank" value="3">
+            <label for="r3">3</label>
+            <input type="radio" id="r4" name="rank" value="4">
+            <label for="r4">4</label>
+            <input type="radio" id="r5" name="rank" value="5">
+            <label for="r5">5</label>
+            <input type="radio" id="r6" name="rank" value="6">
+            <label for="r6">6</label>
+            <input type="radio" id="r7" name="rank" value="7">
+            <label for="r7">7</label>
+            <input type="radio" id="r8" name="rank" value="8">
+            <label for="r8">8</label>
+            <input type="radio" id="r9" name="rank" value="9">
+            <label for="r9">9</label>
+            <input type="radio" id="r10" name="rank" value="10">
+            <label for="r10">10</label>
+            <input type="submit">
+        </form>
+    </div>
+
+    <div class="journal_entries">
+    </div>
+
+    <script>
+        const journal_entries = document.getElementsByClassName("journal_entries")[0];
+        const data_text = JSON.parse('{{data | tojson}}');
+        const data_rank = JSON.parse('{{rankings | tojson}}');
+
+        function add_journals(dates) {
+            
+            // Loopa över dates och lägg till journals
+            for (let i in dates) {
+                    var date = dates[i]
+                    var div = document.createElement("div");
+                    var rank_txt = '';
+                    div.className = 'journal';
+                    if (date in data_rank){
+                        div.id = 'rank' + data_rank[date]
+                        rank_txt = '  (' + data_rank[date] + ')'
+                    }
+
+                    var h2 = document.createElement("h2");
+                    var h3 = document.createElement("p");
+                    var p = document.createElement("p");
+                    h2.innerHTML = date
+                    h2.style.display = 'inline'
+                    h3.style.display = 'inline'
+                    p.innerHTML = data_text[date]
+                    h3.innerHTML = rank_txt
+
+                    div.appendChild(h2);
+                    div.appendChild(h3);
+                    div.appendChild(p);
+                    
+                    div.addEventListener("dblclick", function () {
+                        // console.log();
+                        var input_div = document.getElementsByClassName('input_div')[0]
+                        input_div.style.display = 'block'
+                        input_div.children[0].value = this.children[2].innerHTML
+                        input_div.children[1].children[0].value = this.children[0].innerHTML
+                    }
+
+                );
+
+                    journal_entries.appendChild(div);
+
+
+                }
+
+            }
+
+        add_journals(Object.keys(data_text))
+
+    </script>
+</body>
+
+</html>

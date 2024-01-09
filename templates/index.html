@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='journal_style.css') }}">
+</head>
+
+<body>
+    <form action="/journal_index">
+        <input type="submit" value="Dagbok">
+    </form>
+
+    <form action="/study_index">
+        <input type="submit" value="Study helper">
+    </form>
+
+</body>
+
+</html>

@@ -1,0 +1,54 @@
+<!-- TODO: 
+    
+ -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='study_style.css') }}">
+    <title>Play</title>
+    <form action="/study_index">
+        <input type="submit" value="Back">
+    </form>
+</head>
+
+<body>
+    <p>Play the game on this page</p>
+   <div class="flashcards">
+        {% for txt1, txt2 in data.items() %}
+            <div class="flashcard" id="{{ txt1 }}" onclick="toggle_answer(this)">
+                {% if txt1.split('.')[-1] in ['jpg', 'jpeg', 'webp', 'png'] %}
+                    <img src="{{url_for('static', filename='pics/' + txt1)}}" style="width: auto; height: auto; max-width: 350px; max-height: 200px;"/>
+                {% else %}
+                    <h2 style="border-top:1px solid rgb(15, 152, 180); padding: 15px; margin-top: 30px" class="question">{{ txt1 }}</h2>
+                {% endif %}
+
+                {% if txt2.split('.')[-1] in ['jpg', 'jpeg', 'webp', 'png'] %}
+                    <img src="{{url_for('static', filename='pics/' + txt2)}}" style="display: none; width: auto; height: auto; max-width: 350px; max-height: 200px;" />
+                {% else %}
+                    <h2 style="text-align:center; display:none; color:rgb(15, 152, 180)" class="answer">{{ txt2 }}</h2>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+<script>
+    function toggle_answer(element){
+        id = element.getAttribute("id")
+        var temp_flashcard = document.getElementById(id);
+        var temp_question = temp_flashcard.children[1];
+        
+        if (temp_question.style.display == "none")
+            temp_question.style.display = "block";
+        else
+            temp_question.style.display = "none";
+
+    }
+</script>
+
+</body>
+</html>
