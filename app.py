@@ -103,6 +103,12 @@ def play_category():
     else:
         return study_index()
 
+'''Ekonomi'''
+@app.route("/ekonomi", methods=['get', 'post'])
+def ekonomi():
+    return render_template('ekonomi.html')
+
+
 '''System'''
 @app.teardown_appcontext
 def print_exeption(exception):
