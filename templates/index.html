@@ -4,23 +4,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"> -->
     <link rel="stylesheet" href="{{ url_for('static', filename='journal_style.css') }}">
 </head>
 
 <body>
-    <form action="/journal_index">
-        <input type="submit" value="Dagbok">
-    </form>
+    <div class="grid-container">
+        <div class="grid-item">
+            <h4>Dagbok</h4>
+            <form action="/journal_index">
+                <input type="submit" value="Dagbok">
+            </form>
+        </div>
+        
+        <div class="grid-item">
+            <h4>Study helper</h4>
+            <form action="/study_index">
+                <input type="submit" value="Study helper">
+            </form>
+        </div>
+        
+        <div class="grid-item">
+            <h4>Stats</h4>
+            <form action="/ekonomi">
+                <input type="submit" value="Ekonomi">
+            </form>
+            <form action="/mående">
+                <input type="submit" value="Mående">
+            </form>
+        </div>
+        
+        <div class="grid-item">
+            <h4>Maintenance</h4>
+            <form action="/update">
+                <input type="submit" value="Update stats">
+            </form>
+        </div>
 
-    <form action="/study_index">
-        <input type="submit" value="Study helper">
-    </form>
-    
-    <form action="/ekonomi">
-        <input type="submit" value="Ekonomi">
-    </form>
-
+    </div>
 </body>
 
 </html>

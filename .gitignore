@@ -1,4 +1,6 @@
 /databases
+/utils
 __*
 /static/pics
-templates/ekonomi.html
+templates/bokeh
+uppdate_server_data.py

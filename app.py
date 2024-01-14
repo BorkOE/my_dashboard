@@ -8,8 +8,8 @@ from flask import Flask, session, render_template, request, g
 from db_handler_journal import DatabaseHandlerJournal
 from db_handler_study import DatabaseHandlerStudy
 from config_handler import ConfigHandler
-
-import json
+from utils import update_journal_stats, update_ekonomi_stats
+# import json
 
 def safe_json_string(s):
     if not s:
@@ -30,16 +30,26 @@ def index():
     '''Main page where I navigate to my apps'''
     return render_template("index.html")
 
+@app.route("/update", methods=['get', 'post'])
+def update_stats():
+    update_journal_stats.run()
+    update_ekonomi_stats.run()
+    return index()
+
 '''Journal'''
 @app.route("/journal_index", methods=['get', 'post'])
 def journal_index():
     '''Main page for journal'''
     submited_text = request.form.get('journal_text')
     submited_rank = request.form.get('rank')
+    submited_hv = request.form.get('headache')
     if submited_text:
         dbh_journal.add_journal(submited_text)
     if submited_rank:
         dbh_journal.add_rank(submited_rank)
+    if submited_hv:
+        dbh_journal.add_headache(submited_hv)
+
 
     return render_template("journal_index.html")
 
@@ -48,11 +58,16 @@ def edit_text():
     '''Main page but from having edited text'''
     submited_text = request.form.get('journal_text')
     submited_rank = request.form.get('rank')
+    submited_hv = request.form.get('headache')
+
 
     date = request.form.get('date')
     dbh_journal.add_journal(submited_text, purge_old=True, date=date)
     if submited_rank:
         dbh_journal.add_rank(submited_rank, date=date)
+    if submited_hv:
+        dbh_journal.add_headache(submited_hv, date=date)
+
 
     return render_template("journal_index.html")
 
@@ -60,8 +75,9 @@ def edit_text():
 def show_journals():
     all_journals = dbh_journal.get_all_journals()
     all_rankings = dbh_journal.get_all_rankings()
+    all_hv = dbh_journal.get_all_hv()
     all_journals = {k: safe_json_string(v) for k, v in all_journals.items()}
-    return render_template("show_journals.html", data=all_journals, rankings=all_rankings)
+    return render_template("show_journals.html", data=all_journals, rankings=all_rankings, headache=all_hv)
 
 '''Study helper'''
 @app.route("/study_index", methods=['get', 'post'])
@@ -103,14 +119,17 @@ def play_category():
     else:
         return study_index()
 
-'''Ekonomi'''
+'''Stats'''
 @app.route("/ekonomi", methods=['get', 'post'])
 def ekonomi():
-    return render_template('ekonomi.html')
+    return render_template('bokeh/ekonomi.html')
+
+@app.route("/mående", methods=['get', 'post'])
+def mående():
+    return render_template('bokeh/mående.html')
 
 
 '''System'''
-@app.teardown_appcontext
 def print_exeption(exception):
     pass
 

@@ -19,29 +19,27 @@
 
         <div class="input_area">
             <textarea name="journal_text" form="journal_form" placeholder="Skriv journal här..." cols="80" rows="20"></textarea>
+
             <form action="/journal_index" id="journal_form" method="post">
-                <input type="radio" id="r1" name="rank" value="1">
-                <label for="r1">1</label>
-                <input type="radio" id="r2" name="rank" value="2">
-                <label for="r2">2</label>
-                <input type="radio" id="r3" name="rank" value="3">
-                <label for="r3">3</label>
-                <input type="radio" id="r4" name="rank" value="4">
-                <label for="r4">4</label>
-                <input type="radio" id="r5" name="rank" value="5">
-                <label for="r5">5</label>
-                <input type="radio" id="r6" name="rank" value="6">
-                <label for="r6">6</label>
-                <input type="radio" id="r7" name="rank" value="7">
-                <label for="r7">7</label>
-                <input type="radio" id="r8" name="rank" value="8">
-                <label for="r8">8</label>
-                <input type="radio" id="r9" name="rank" value="9">
-                <label for="r9">9</label>
-                <input type="radio" id="r10" name="rank" value="10">
-                <label for="r10">10</label>
+                <!-- rank -->
+                <p>Allmänt mående</p>
+                {% for i in range(10) %}
+
+                    <input type="radio" id="r{{i+1}}" name="rank" value="{{i+1}}">
+                    <label for="r{{i+1}}">{{i+1}}</label>
+                {% endfor %}
                 
                 <br>
+                
+                <!-- huvudvärk -->
+                <p>Huvudvärk</p>
+                {% for i in range(5) %}
+                <input type="radio" id="h{{i+1}}" name="headache" value="{{i+1}}">
+                <label for="h{{i+1}}">{{i+1}}</label>
+                {% endfor %}
+
+                <br>
+
                 <input type="submit">
             </form>
         </div>

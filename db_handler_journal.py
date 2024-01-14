@@ -81,6 +81,23 @@ class DatabaseHandlerJournal():
             self.cursor.execute(sql, (dt.date(dt.now()), input_rank))
 
         self.connection.commit()
+    
+    def add_headache(self, input_hv, date=None):
+        if not input_hv:
+            return
+
+        input_hv = int(input_hv)
+        date_exist = self.check_date_exist(date)
+
+        if date_exist:
+            sql_where = self.get_where_sql(date)
+            sql = f"UPDATE {db_string} SET huvudvärk={input_hv} {sql_where}"
+            self.cursor.execute(sql)
+        else:
+            sql = f"INSERT INTO {db_string} (date, huvudvärk) VALUES (?,?)"
+            self.cursor.execute(sql, (dt.date(dt.now()), input_hv))
+
+        self.connection.commit()
 
 
     def close(self):
@@ -102,6 +119,12 @@ class DatabaseHandlerJournal():
 
     def get_all_rankings(self):
         self.cursor.execute(f'SELECT date, rank FROM journal')
+        res = self.cursor.fetchall()
+        data = {t[0]: t[1] for t in res if t[1]}
+        return data
+    
+    def get_all_hv(self):
+        self.cursor.execute(f'SELECT date, huvudvärk FROM journal')
         res = self.cursor.fetchall()
         data = {t[0]: t[1] for t in res if t[1]}
         return data

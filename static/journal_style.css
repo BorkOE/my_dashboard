@@ -6,6 +6,7 @@
     box-sizing: border-box;
 }
 
+
 body{
     margin: 20px;
     font-family: 'Nunito', sans-serif;
@@ -15,6 +16,34 @@ body{
 
 header{
     background-color: white;
+}
+
+.grid-container {
+    place-self: center;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    /* background-color: #a4c6c6; */
+    border-radius: 5px;
+    border-color: bisque;
+    padding: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+    
+    border-radius: 10px;
+    border-color: rgb(94, 171, 195);
+    border-style: solid;
+    border-width: 5px;
+}
+
+.grid-item {
+    /* background-color: rgba(255, 255, 255, 0.8); */
+    /* border: 1px solid rgba(0, 0, 0, 0.8); */
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+}
+textarea{
+    padding: 10px;
 }
 
 img{

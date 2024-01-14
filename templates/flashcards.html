@@ -17,7 +17,6 @@
 </head>
 
 <body>
-    <p>Play the game on this page</p>
    <div class="flashcards">
         {% for txt1, txt2 in data.items() %}
             <div class="flashcard" id="{{ txt1 }}" onclick="toggle_answer(this)">
